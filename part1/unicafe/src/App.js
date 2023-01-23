@@ -1,7 +1,46 @@
 import { useState } from "react";
 
-//
+// Statistics component showing feedback stats
+const Statistics = (props) => {
+  if (props.all.length === 0) {
+    return (
+      <div>
+        <p>no feedback given</p>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <div>
+        <h1>statistics</h1>
+      </div>
+      <div>good {props.good}</div>
+      <div>neutral {props.neutral}</div>
+      <div>bad {props.bad}</div>
+      <div>
+        all{" "}
+        {props.all.reduce(function (x, y) {
+          return x + y;
+        }, 0)}
+      </div>
+    </div>
+  );
+};
 
+//Button component
+const Button = (props) => {
+  return (
+    <div>
+      <button onClick={props.handleGoodClick}> {props.text1} </button>
+      <button onClick={props.handleNeutralClick}> {props.text2} </button>
+      <button onClick={props.handleBadClick}> {props.text3} </button>
+    </div>
+  );
+};
+
+//StatisticsLine component
+
+//App component
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
@@ -9,41 +48,30 @@ const App = () => {
   const [bad, setBad] = useState(0);
   const [all, setAll] = useState([]);
 
-  const handleGoodClick = () => {
-    setAll(all.concat(1));
-    setGood(good + 1);
-  };
-  const handleBadClick = () => {
-    setAll(all.concat(1));
-    setBad(bad + 1);
-  };
-  const handleNeutralClick = () => {
-    setAll(all.concat(1));
-    setNeutral(neutral + 1);
-  };
-
   return (
     <div>
+      <div></div>
       <div>
         <h1>give feedback</h1>
       </div>
-      <span>
-        <button onClick={handleGoodClick}>good</button>
-        <button onClick={handleNeutralClick}>neutral</button>
-        <button onClick={handleBadClick}>bad</button>
-      </span>
-      <div>
-        <h1>statistics</h1>
-      </div>
-      <div>good {good}</div>
-      <div>neutral {neutral}</div>
-      <div>bad {bad}</div>
-      <div>
-        all{" "}
-        {all.reduce(function (x, y) {
-          return x + y;
-        }, 0)}
-      </div>
+      <Button
+        handleGoodClick={() => {
+          setGood(good + 1);
+          setAll(all.concat(1));
+        }}
+        text1="good"
+        handleNeutralClick={() => {
+          setNeutral(neutral + 1);
+          setAll(all.concat(1));
+        }}
+        text2="neutral"
+        handleBadClick={() => {
+          setBad(bad + 1);
+          setAll(all.concat(1));
+        }}
+        text3="bad"
+      />
+      <Statistics good={good} neutral={neutral} bad={bad} all={all} />
     </div>
   );
 };
