@@ -1,67 +1,73 @@
-const Course = ({ course, total }) => {
+const Courses = () => {
   return (
     <div>
-      <Header course={course} />
-      <Content parts={course.parts} />
-      <p>total sum of exercises = {total}</p>
+      <h1>Web Development Curriculum</h1>
     </div>
   );
 };
 
-const Header = ({ course }) => {
+const Header = ({ courses }) => {
   return (
     <div>
-      <h1>{course.name}</h1>
-    </div>
-  );
-};
-
-const Content = ({ parts }) => {
-  return (
-    <div>
-      <Part parts={parts[0].name} ex={parts[0].exercises} />
-      <Part parts={parts[1].name} ex={parts[1].exercises} />
-      <Part parts={parts[2].name} ex={parts[2].exercises} />
-    </div>
-  );
-};
-
-const Part = ({ parts, ex }) => {
-  return (
-    <div>
-      {parts} {ex}
+      {courses.map((course) => (
+        <h2 key={course.id}>{course.name}</h2>
+      ))}
     </div>
   );
 };
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-        id: 1,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-        id: 2,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-        id: 3,
-      },
-    ],
-  };
+  const courses = [
+    {
+      name: "Half Stack application development",
+      id: 1,
+      parts: [
+        {
+          name: "Fundamentals of React",
+          exercises: 10,
+          id: 1,
+        },
+        {
+          name: "Using props to pass data",
+          exercises: 7,
+          id: 2,
+        },
+        {
+          name: "State of a component",
+          exercises: 14,
+          id: 3,
+        },
+        {
+          name: "Redux",
+          exercises: 11,
+          id: 4,
+        },
+      ],
+    },
+    {
+      name: "Node.js",
+      id: 2,
+      parts: [
+        {
+          name: "Routing",
+          exercises: 3,
+          id: 1,
+        },
+        {
+          name: "Middlewares",
+          exercises: 7,
+          id: 2,
+        },
+      ],
+    },
+  ];
 
-  const total = course.parts.reduce((s, p) => {
-    return s + p.exercises;
-  }, 0);
-
-  return <Course course={course} total={total} />;
+  return (
+    <div>
+      <Courses />
+      <Header courses={courses} />
+    </div>
+  );
 };
 
 export default App;
