@@ -1,17 +1,20 @@
-const Courses = () => {
+const Courses = ({ courses }) => {
   return (
     <div>
       <h1>Web Development Curriculum</h1>
-    </div>
-  );
-};
-
-const Header = ({ courses }) => {
-  return (
-    <div>
-      {courses.map((course) => (
-        <h2 key={course.id}>{course.name}</h2>
-      ))}
+      <p>
+        {courses.map((course) => (
+          <p key={course.id}>
+            <b>{course.name}</b>
+            {course.parts.map((part) => (
+              <p>
+                {part.name}
+                {part.exercises}
+              </p>
+            ))}
+          </p>
+        ))}
+      </p>
     </div>
   );
 };
@@ -64,8 +67,7 @@ const App = () => {
 
   return (
     <div>
-      <Courses />
-      <Header courses={courses} />
+      <Courses courses={courses} />
     </div>
   );
 };
