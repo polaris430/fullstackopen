@@ -1,19 +1,53 @@
-const Courses = ({ courses }) => {
+const Course = ({ name, parts }) => {
   return (
     <div>
-      <h1>Web Development Curriculum</h1>
+      <Header name={name} />
+      <Content part={parts} />
+      <Total
+        sum={parts
+          .map((part) => part.exercises)
+          .reduce((s, p) => {
+            return s + p;
+          })}
+      />
+    </div>
+  );
+};
+
+const Header = ({ name }) => {
+  return (
+    <div>
+      <b>{name}</b>
+    </div>
+  );
+};
+
+const Content = ({ part }) => {
+  return (
+    <div>
+      {part.map((part) => (
+        <Part {...part} key={part.id} />
+      ))}
+    </div>
+  );
+};
+
+const Total = ({ sum }) => {
+  return (
+    <div>
+      <b>
+        {" "}
+        <p>total of {sum} exercises </p>{" "}
+      </b>
+    </div>
+  );
+};
+
+const Part = ({ name, exercises }) => {
+  return (
+    <div>
       <p>
-        {courses.map((course) => (
-          <p key={course.id}>
-            <b>{course.name}</b>
-            {course.parts.map((part) => (
-              <p>
-                {part.name}
-                {part.exercises}
-              </p>
-            ))}
-          </p>
-        ))}
+        {name} {exercises}
       </p>
     </div>
   );
@@ -67,7 +101,10 @@ const App = () => {
 
   return (
     <div>
-      <Courses courses={courses} />
+      <h1> Web development curriculum </h1>
+      {courses.map((course) => (
+        <Course {...course} key={course.id} />
+      ))}
     </div>
   );
 };
