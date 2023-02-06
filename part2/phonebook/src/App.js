@@ -1,4 +1,7 @@
 import { useState } from "react";
+import SearchFiler from "./components/SearchFilter";
+import AddPerson from "./components/AddPerson";
+import AllPerson from "./components/AllPerson";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,26 +12,21 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [newId, setNewId] = useState(persons.length + 1);
   const [showAll, setShowAll] = useState("");
   const [filter, setNewFilter] = useState("");
-
   const namesToShow = showAll
     ? persons
     : persons.filter((person) =>
         person.name.toLowerCase().includes(filter.toLowerCase())
       );
 
-  const handleFilter = (event) => {
-    event.preventDefault();
-    setNewFilter(event.target.value);
-    setShowAll("");
-  };
-
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
       name: newName,
       number: newNumber,
+      id: newId,
     };
     if (persons.some((person) => person.name === newName)) {
       alert(`${newName} "is already added"`);
@@ -36,49 +34,27 @@ const App = () => {
       setPersons(persons.concat(personObject));
       setNewName("");
       setNewNumber("");
-      console.log("Button clicked", event.target);
+      setNewId("");
     }
   };
-
-  const handleNameChange = (event) => {
-    event.preventDefault();
-    console.log(event.target.value);
-    setNewName(event.target.value);
-  };
-
-  const handleNumberChange = (event) => {
-    event.preventDefault();
-    console.log(event.target.value);
-    setNewNumber(event.target.value);
-  };
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input onChange={handleFilter} value={filter} />
-      </div>
-
-      <h1> add a new </h1>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <SearchFiler
+        handleFilter={(event) => {
+          setNewFilter(event.target.value);
+          setShowAll("");
+        }}
+      />
+      <h2> Add a new contact </h2>
+      <br />
+      <AddPerson
+        handleNameChange={(event) => setNewName(event.target.value)}
+        handleNumberChange={(event) => setNewNumber(event.target.value)}
+        addPerson={addPerson}
+      />
       <h2>Numbers</h2>
-      <div>
-        {namesToShow.map((person) => (
-          <p key={person.name}>
-            {person.name} {person.number}
-          </p>
-        ))}
-      </div>
+      <AllPerson namesToShow={namesToShow} persons={persons} />
     </div>
   );
 };
